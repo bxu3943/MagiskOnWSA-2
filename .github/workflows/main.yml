@@ -1,0 +1,26 @@
+
+name: Download and edddxtract zip file
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Download zip file
+        run: |
+         wget -O file.zip "https://ava5.androidfilehost.com/dl/uoknNXcWB7CBWyNK3tSZsQ/1680902229/1395089523397939691/C7000ZHS3CRJ1_C7000ZZH3CRJ1_TGY.zip" 
+         unzip file.zip
+         tar -xvf AP*.tar.md5 boot.img.lz4
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3.1.2
+        with:
+          name: boot.img.lz4
+          path: boot.img.lz4
