@@ -1,0 +1,51 @@
+name: Download and Clean Zip File
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Download zip file
+      run: curl -sSL -o file.zip https://bigota.d.miui.com/V14.0.1.0.TKFINXM/miui_SWEETININGlobal_V14.0.1.0.TKFINXM_022ce09a45_13.0.zip
+
+    - name: Extract zip file
+      run: |
+       
+      
+        unzip file.zip
+
+    - name: Delete large files
+      run: |
+
+       zip -d file.zip system*
+       zip -d file.zip odm* 
+       zip -d file.zip product*
+       zip -d vendor*
+       find . -type f -size +200M -delete
+    - name: Create new zip file
+      run: |
+        
+        zip -r  ./newfile.zip .
+        cd ..
+    - name: Create new zip file
+      run: |
+        
+        zip -r ./newfile.zip .
+    - name: Upload new zip file
+      uses: actions/upload-artifact@v3.1.2
+      with:
+        name: file
+        path: file.zip
+    - name: Upload new zip file
+      uses: actions/upload-artifact@v3.1.2
+      with:
+        name: newfile
+        path: newfile.zip
